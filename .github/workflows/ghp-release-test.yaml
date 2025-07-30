@@ -1,0 +1,70 @@
+name: Create • Build • Deploy Version Branch → GH Pages
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  create-build-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      # 1. Checkout the branch that triggered the workflow
+      - name: Checkout current branch
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      # 2. Compute next integer version & branch name
+      - name: Compute next version
+        id: version
+        run: |
+          # list remote heads matching version-*
+          versions=$(git ls-remote --heads origin 'refs/heads/version-*' \
+            | awk '{print $2}' \
+            | sed 's|refs/heads/version-||' \
+            | sort -n)
+          echo "Found versions: $versions"
+
+          if [ -z "$versions" ]; then
+            next=1
+          else
+            max=$(echo "$versions" | tail -n1)
+            next=$((max + 1))
+          fi
+
+          echo "next_version=$next" >> $GITHUB_OUTPUT
+          echo "branch=version-$next" >> $GITHUB_OUTPUT
+
+      # 3. Create the new branch from the current commit
+      - name: Create version branch
+        uses: actions/github-script@v6
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const branch = '${{ steps.version.outputs.branch }}';
+            
+            // Create the new branch from the current commit SHA
+            await github.rest.git.createRef({
+              owner: context.repo.owner,
+              repo:  context.repo.repo,
+              ref:   `refs/heads/${branch}`,
+              sha:   context.sha 
+            });
+
+      # 4. Build your React app (using the already checked out code)
+      - name: Install & build
+        run: |
+          yarn install
+          yarn run build
+
+      # 5. Deploy to GH Pages
+      - name: Deploy to gh-pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_branch: gh-pages
+          publish_dir: ./out
+          force_orphan: true
