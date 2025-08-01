@@ -9,7 +9,6 @@ export function getAssetPath(path: string): string {
   // Make sure path starts with '/'
   const normalizedPath = path.startsWith('/') ? path : `/${path}`;
   
-  console.log(process.env.NODE_ENV)
   // In development, we don't need the basePath
   if (process.env.NODE_ENV === 'development') {
     return normalizedPath;
