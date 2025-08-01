@@ -5,7 +5,7 @@
   },
   "waitFor": "onCreateCommand",
   "updateContentCommand": "npm install --legacy-peer-deps",
-  "postCreateCommand": "rm -rf node_modules && npm install --legacy-peer-deps && npm cache clean --force",
+  "postCreateCommand": "npm cache clean --force",
   "postAttachCommand": {
     "server": "npm run dev"
   },
