@@ -1,12 +1,13 @@
 'use client'
 
-import { useRouter } from "next/navigation"
 import { useCallback, useState, useEffect } from "react"
-import Button from '../components/Button'
 import ClickCount from '../components/ClickCount'
 import styles from '../styles/home.module.css'
+import Image from "next/image"
 
 export default () => {
+  const png = '/cat.png'
+  const jpg = '/cat.jpg'
 
   const [count, setCount] = useState(0)
   const increment = useCallback(() => {
@@ -32,6 +33,18 @@ export default () => {
         state.
       </p>
       <hr className={styles.hr} />
+      <Image
+        height={50}
+        width={50}
+        src={png}
+        alt="cat png"
+      />
+      <Image
+        height={50}
+        width={50}
+        alt="cat jpg"
+        src={jpg}
+      />
       <div>
         <p>
           Auto incrementing value. The counter won't reset after edits or if
