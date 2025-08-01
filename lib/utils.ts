@@ -1,3 +1,5 @@
+import { repoName } from './repoName.js';
+
 /**
  * Utility function to get the correct path for assets based on the environment
  * @param path The path to the asset (should start with '/')
@@ -15,6 +17,6 @@ export function getAssetPath(path: string): string {
   
   // In production, we need to add the basePath
   // The basePath is defined in next.config.prod.js as '/GameJamAITemplate'
-  const basePath = '/GameJamAITemplate';
+  const basePath = `/${repoName}`;
   return `${basePath}${normalizedPath}`;
 }
