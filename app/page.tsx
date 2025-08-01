@@ -4,10 +4,11 @@ import { useCallback, useState, useEffect } from "react"
 import ClickCount from '../components/ClickCount'
 import styles from '../styles/home.module.css'
 import Image from "next/image"
+import { getAssetPath } from '../lib/utils'
 
 export default () => {
-  const png = '/cat.png'
-  const jpg = '/cat.jpg'
+  const png = getAssetPath('/cat.png')
+  const jpg = getAssetPath('/cat.jpg')
 
   const [count, setCount] = useState(0)
   const increment = useCallback(() => {
