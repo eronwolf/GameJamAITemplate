@@ -46,6 +46,12 @@ export default () => {
         alt="cat jpg"
         src={jpg}
       />
+      <div style={{
+        width: 50,
+        height: 50,
+        backgroundSize: 'cover',
+        backgroundImage: `url('/cat.png')`
+      }} />
       <div>
         <p>
           Auto incrementing value. The counter won't reset after edits or if
