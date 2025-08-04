@@ -50,7 +50,7 @@ export default () => {
         width: 50,
         height: 50,
         backgroundSize: 'cover',
-        backgroundImage: `url('/cat.png')`
+        backgroundImage: `url(${getAssetPath('/cat.png')})`
       }} />
       <div>
         <p>
